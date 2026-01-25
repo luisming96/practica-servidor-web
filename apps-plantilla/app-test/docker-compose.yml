@@ -1,0 +1,12 @@
+services:
+  web:
+    image: nginx:alpine
+    container_name: app-test-luis
+    volumes:
+      - ./index.html:/usr/share/nginx/html/index.html
+    networks:
+      - proxy-network # Asegúrate que este nombre es el de tu red de Nginx
+
+networks:
+  proxy-network:
+    external: true
