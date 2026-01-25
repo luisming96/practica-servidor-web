@@ -1,0 +1,50 @@
+services:
+  proxy:
+    image: 'jc21/nginx-proxy-manager:latest'
+    container_name: nginx-proxy
+    restart: unless-stopped
+    ports:
+      - '80:80'
+      - '443:443'
+      - '81:81'
+    volumes:
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
+    networks:
+      - proxy-network
+
+  portainer:
+    image: 'portainer/portainer-ce:2.21.5-alpine'
+    container_name: portainer
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    networks:
+      - proxy-network
+
+  prometheus:
+    image: 'prom/prometheus:v3.1.0'
+    container_name: prometheus
+    restart: unless-stopped
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - monitoring-network
+
+  grafana:
+    image: 'grafana/grafana:latest'
+    container_name: grafana
+    restart: unless-stopped
+    networks:
+      - monitoring-network
+      - proxy-network
+
+networks:
+  proxy-network:
+    external: true
+  monitoring-network:
+    external: true
+
+volumes:
+  portainer_data:
