@@ -1,0 +1,2 @@
+[25/Jan/2026:17:31:55 +0000] - 200 200 - GET http app-luis.test "/" [Client 192.168.1.15] [Length 92] [Gzip 0.79] [Sent-to app-test-luis] "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36" "http://192.168.1.16:81/"
+[25/Jan/2026:17:35:43 +0000] - 200 200 - GET http app-luis.test "/" [Client 192.168.1.15] [Length 92] [Gzip 0.79] [Sent-to app-test-luis] "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36" "-"

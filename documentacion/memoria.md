@@ -19,5 +19,9 @@ He implementado un stack de monitorización real usando **Node Exporter** para o
 
 ### Estrategia de Dominios y SSL
 Uso **Nginx Proxy Manager** para gestionar dominios `.test`. 
-- **Sobre HTTPS:** El sistema está configurado y preparado para el despliegue de certificados reales mediante el reto HTTP-01 de Let's Encrypt. 
-- **Limitación técnica:** Debido a que el entorno de pruebas es una red privada (LAN) sin visibilidad desde internet, la validación de Let's Encrypt no puede completarse. No obstante, se ha configurado la redirección forzosa a HTTPS para demostrar la arquitectura de seguridad requerida.
+- **Sobre HTTPS:** El sistema está configurado y preparado para el despliegue de certificados reales mediante el reto HTTP-01 de Let's Encrypt.
+ He configurado el stack de Nginx Proxy Manager para gestionar certificados mediante el protocolo ACME.
+ Sin embargo, debido a que el entorno de trabajo es una red local (LAN) y el dominio utilizado es de primer nivel reservado (.test),
+ la validación HTTP-01 de Let's Encrypt no puede completarse al no haber visibilidad pública desde los servidores de la CA.
+ La arquitectura está diseñada para ser "production-ready": en el momento en que el servidor cuente con una IP pública y un FQDN real,
+ la emisión y renovación automática de certificados sería inmediata sin cambios en la configuración.
