@@ -1,33 +1,24 @@
-# Runbook: Servidor de Aplicaciones Web (Práctica RA2)
+# Guía de Despliegue - Servidor RA2
 
-## 1. Requisitos de red
-* **Modo de red:** Adaptador Puente (Bridged) para visibilidad desde otros equipos del aula.
-* **IP del Servidor:** 192.168.1.16 (Cambia según la red).
-* **Puertos abiertos:**
-    * `80/443`: Tráfico web (HTTP/HTTPS).
-    * `81`: Administración del Proxy.
-    * `3000`: Monitorización (Grafana).
-    * `9000/9443`: Gestión (Portainer).
+Este es el manual para operar el servidor. He montado un stack con Docker que incluye el proxy, la monitorización y la gestión de contenedores.
 
-## 2. Cómo crear usuarios
-Se recomienda usar el script automatizado incluido en el repositorio:
-1. `sudo ./scripts/crear_usuario.sh`
-2. El script creará el usuario, lo añadirá al grupo `docker` y generará la carpeta `~/apps/`.
+### Configuración de Red
+La VM está en **Adaptador Puente**. 
+- Puertos abiertos: 80/443 (Web), 81 (Nginx Proxy Manager), 22 (SSH), 3000 (Grafana).
+- IP actual: 192.168.1.16 (O la que asigne el DHCP del aula).
 
-## 3. Cómo desplegar una app (Pasos mínimos)
-1. **Transferencia:** Desde el PC local: `scp -r ./nombre-app deploy-alumno@192.168.1.16:~/apps/`.
-2. **Despliegue:** Por SSH: `cd ~/apps/nombre-app && docker compose up -d`.
+### Gestión de Usuarios
+He automatizado la creación de usuarios para no perder tiempo con permisos de Linux.
+- **Script:** `./scripts/crear_usuario.sh` (ejecutar con sudo).
+- El script crea el usuario, lo mete en el grupo `docker` y le deja lista la carpeta `~/apps/`.
 
-## 4. Cómo añadir un dominio y certificarlo
-1. Acceder a `http://192.168.1.16:81`.
-2. Añadir un **Proxy Host** con el nombre del dominio.
-3. En la pestaña **SSL**, seleccionar "Request a new SSL Certificate" de Let's Encrypt y marcar "Force SSL".
+### Pasos para desplegar una App
+1. Pasar la carpeta por SCP: `scp -r ./carpeta-app usuario@IP:~/apps/`.
+2. Conectar por SSH: `ssh usuario@IP`.
+3. Levantar: `cd ~/apps/carpeta-app && docker compose up -d`.
 
-## 5. Cómo comprobar métricas
-1. Acceder a Grafana en el puerto `3000`.
-2. Consultar el Dashboard para visualizar el estado de CPU, RAM y red de los contenedores.
+### Dominio y SSL
+Se gestiona desde el panel de Nginx (puerto 81). Al añadir el Proxy Host, hay que marcar la pestaña de SSL para pedir el certificado de Let's Encrypt y activar el "Force SSL".
 
-## 6. Mantenimiento básico
-* **Ver estado:** `docker ps`
-* **Reiniciar plataforma:** `cd ~/plataforma && docker compose restart`
-* **Parar servicios:** `docker compose down`
+### Monitorización
+Las métricas se pueden consultar en Grafana (puerto 3000). He conectado Prometheus para que saque los datos de uso de CPU y RAM de cada contenedor.
