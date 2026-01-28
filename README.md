@@ -18,6 +18,7 @@ He automatizado el alta para cumplir con el aislamiento de permisos:
 2. **Conectar:** `ssh usuario@192.168.1.16`
 3. **Levantar:** `cd ~/apps/mi-app && docker compose up -d`
 *Nota: Es obligatorio que el `docker-compose.yml` de la app use la red externa `proxy-network`.*
+He incluido una carpeta llamada apps-plantilla/ con una aplicación de prueba lista para ser copiada a su directorio ~/apps/ y ejecutada mediante:  docker compose up -d.
 
 ## 4. Dominio y SSL (Let's Encrypt)
 1. Acceder al panel: `http://192.168.1.16:81`

@@ -25,3 +25,7 @@ Uso **Nginx Proxy Manager** para gestionar dominios `.test`.
  la validación HTTP-01 de Let's Encrypt no puede completarse al no haber visibilidad pública desde los servidores de la CA.
  La arquitectura está diseñada para ser "production-ready": en el momento en que el servidor cuente con una IP pública y un FQDN real,
  la emisión y renovación automática de certificados sería inmediata sin cambios en la configuración.
+
+"La renovación de los certificados está configurada de forma automática.
+ Nginx Proxy Manager incluye un servicio interno que comprueba la validez de los certificados y lanza el proceso de renovación 30 días antes de su expiración,
+ siempre que el reto ACME sea accesible."
