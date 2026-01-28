@@ -29,3 +29,7 @@ Uso **Nginx Proxy Manager** para gestionar dominios `.test`.
 "La renovación de los certificados está configurada de forma automática.
  Nginx Proxy Manager incluye un servicio interno que comprueba la validez de los certificados y lanza el proceso de renovación 30 días antes de su expiración,
  siempre que el reto ACME sea accesible."
+
+ Sobre el DNS del aula: He visto el servidor DNS que ha subido el profesor. Mi servidor está totalmente preparado para usarlo:
+ solo habría que poner mi IP (192.168.1.16) en su configuración. Así, cualquiera en el aula podría entrar a mis webs por su nombre sin tener que andar tocando el archivo hosts a mano.
+ Es una solución mucho más profesional para trabajar en red.
