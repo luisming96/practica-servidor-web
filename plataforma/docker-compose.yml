@@ -1,24 +1,26 @@
+version: '3'
+
 services:
+  # --- PROXY MÁGICO (jwilder) ---
   proxy:
-    image: 'jc21/nginx-proxy-manager:latest'
+    image: jwilder/nginx-proxy:alpine
     container_name: nginx-proxy
-    restart: unless-stopped
+    restart: always
     ports:
-      - '80:80'
-      - '443:443'
-      - '81:81'
+      - "80:80"
     volumes:
-      - ./data:/data
-      - ./letsencrypt:/etc/letsencrypt
+      - /var/run/docker.sock:/tmp/docker.sock:ro
     networks:
       - proxy-network
 
+  # --- TUS SERVICIOS ---
   portainer:
     image: 'portainer/portainer-ce:2.21.5-alpine'
     container_name: portainer
     restart: unless-stopped
-    ports:
-      - '9000:9000'
+    environment:
+      - VIRTUAL_HOST=portainer.test
+      - VIRTUAL_PORT=9000
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer_data:/data
@@ -29,19 +31,22 @@ services:
     image: 'prom/prometheus:v3.1.0'
     container_name: prometheus
     restart: unless-stopped
-    ports:
-      - '9090:9090'
+    environment:
+      - VIRTUAL_HOST=prometheus.test
+      - VIRTUAL_PORT=9090
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
     networks:
       - monitoring-network
+      - proxy-network
 
   grafana:
     image: 'grafana/grafana:latest'
     container_name: grafana
     restart: unless-stopped
-    ports:
-      - '3000:3000'
+    environment:
+      - VIRTUAL_HOST=grafana.test
+      - VIRTUAL_PORT=3000
     networks:
       - monitoring-network
       - proxy-network

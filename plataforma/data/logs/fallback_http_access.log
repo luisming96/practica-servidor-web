@@ -1,1 +1,3 @@
-[25/Jan/2026:17:26:27 +0000] 200 - GET http app-luis.test "/" [Client 192.168.1.15] [Length 568] [Gzip 1.86] "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36" "-"
+[10/Feb/2026:09:03:52 +0000] 200 - GET http app-juanma.test "/" [Client 192.168.1.102] [Length 568] [Gzip 1.86] "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36" "-"
+[10/Feb/2026:09:26:34 +0000] 304 - GET http app-juanma.test "/" [Client 192.168.1.102] [Length 0] [Gzip -] "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36" "-"
+[10/Feb/2026:10:43:02 +0000] 304 - GET http app-juanma.test "/" [Client 192.168.1.102] [Length 0] [Gzip -] "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36" "-"
