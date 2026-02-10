@@ -20,15 +20,14 @@ He automatizado el alta para cumplir con el aislamiento de permisos:
 *Nota: Es obligatorio que el `docker-compose.yml` de la app use la red externa `proxy-network`.*
 He incluido una carpeta llamada apps-plantilla/ con una aplicación de prueba lista para ser copiada a su directorio ~/apps/ y ejecutada mediante:  docker compose up -d.
 
-## 4. Dominio y SSL (Let's Encrypt)
-1. Acceder al panel: `http://192.168.1.16:81`
-2. Crear un **Proxy Host** apuntando al nombre del contenedor y su puerto.
-3. En la pestaña **SSL**, solicitar certificado Let's Encrypt y activar **"Force SSL"**.
-*Nota: En red local sin IP pública, el reto ACME fallará; se justifica en la memoria.*
+## 4. Dominio y Automatización de Proxy
+1. Sin panel manual: He migrado a una solución de Proxy Inverso Dinámico. Ya no es necesario configurar reglas en un panel web (puerto 81).
+2. Detección Automática: El proxy detecta las apps mediante la variable VIRTUAL_HOST definida en el docker-compose.yml de cada aplicación.
+3. SSL: El sistema está preparado para integrar el contenedor acme-companion para certificados automáticos.
 
 ## 5. Monitorización y Gestión
-- **Métricas:** Grafana en el puerto `3000` (Dashboard 1860 - Node Exporter).
-- **Contenedores:** Portainer en el puerto `9000`.
+1. Métricas: Grafana en el puerto 3000 (Dashboard 1860 - Node Exporter).
+2. Contenedores: Portainer en el puerto 9000 (Acceso directo para administración).
 
 ## 6. Mantenimiento Básico
 - **Reiniciar plataforma:** `cd plataforma && docker compose up -d --force-recreate`
