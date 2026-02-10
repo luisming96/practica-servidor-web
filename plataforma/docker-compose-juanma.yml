@@ -1,0 +1,17 @@
+services:
+  web:
+    image: nginx:alpine
+    container_name: app-juanma
+    # --- ESTO ES LO QUE FALTA ---
+    environment:
+      - VIRTUAL_HOST=app-juanma.test
+      - VIRTUAL_PORT=80
+    # ----------------------------
+    volumes:
+      - ./index.html:/usr/share/nginx/html/index.html
+    networks:
+      - proxy-network
+
+networks:
+  proxy-network:
+    external: true
