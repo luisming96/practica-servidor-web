@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  # --- PROXY MÁGICO (jwilder) ---
+  # --- PROXY: El único con puerto 80 abierto ---
   proxy:
     image: jwilder/nginx-proxy:alpine
     container_name: nginx-proxy
@@ -13,13 +13,13 @@ services:
     networks:
       - proxy-network
 
-  # --- TUS SERVICIOS ---
+  # --- PORTAINER ---
   portainer:
     image: 'portainer/portainer-ce:2.21.5-alpine'
     container_name: portainer
     restart: unless-stopped
     environment:
-      - VIRTUAL_HOST=portainer.test
+      - VIRTUAL_HOST=portainer.192.168.1.17.nip.io
       - VIRTUAL_PORT=9000
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -27,33 +27,36 @@ services:
     networks:
       - proxy-network
 
+  # --- PROMETHEUS ---
   prometheus:
     image: 'prom/prometheus:v3.1.0'
     container_name: prometheus
     restart: unless-stopped
     environment:
-      - VIRTUAL_HOST=prometheus.test
+      - VIRTUAL_HOST=prometheus.192.168.1.17.nip.io
       - VIRTUAL_PORT=9090
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
-      - prometheus_data:/prometheus # <--- CORREGIDO: Ahora los datos se guardan
+      - prometheus_data:/prometheus
     networks:
       - monitoring-network
       - proxy-network
 
+  # --- GRAFANA ---
   grafana:
     image: 'grafana/grafana:latest'
     container_name: grafana
     restart: unless-stopped
     environment:
-      - VIRTUAL_HOST=grafana.test
+      - VIRTUAL_HOST=grafana.192.168.1.17.nip.io
       - VIRTUAL_PORT=3000
     volumes:
-      - grafana_data:/var/lib/grafana # <--- CORREGIDO: Ahora tus Dashboards no se borran
+      - grafana_data:/var/lib/grafana
     networks:
       - monitoring-network
       - proxy-network
 
+  # --- NODE EXPORTER ---
   node-exporter:
     image: prom/node-exporter:latest
     container_name: node-exporter
@@ -66,7 +69,6 @@ services:
       - '--path.procfs=/host/proc'
       - '--path.rootfs=/rootfs'
       - '--path.sysfs=/host/sys'
-      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
     networks:
       - monitoring-network
 
@@ -76,8 +78,7 @@ networks:
   monitoring-network:
     external: true
 
-# --- VOLÚMENES (AQUÍ ES DONDE SE GUARDA TODO) ---
 volumes:
   portainer_data:
-  prometheus_data: # <--- AÑADIDO
-  grafana_data:    # <--- AÑADIDO
+  prometheus_data:
+  grafana_data:
