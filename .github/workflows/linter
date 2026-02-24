@@ -1,0 +1,16 @@
+name: Docker Compose Linter
+
+on: [push]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v3
+
+      - name: Validar sintaxis de Docker Compose
+        run: |
+          # Verifica el archivo de la plataforma que pide el entregable [cite: 167]
+          docker compose -f plataforma/docker-compose.yml config -q
+          echo "✅ Estructura del Docker Compose correcta"
