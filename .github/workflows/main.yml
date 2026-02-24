@@ -3,7 +3,8 @@ name: Build and Push to Docker Hub
 on:
   push:
     branches: [ "main" ] # Se activa al subir a la rama principal
-
+    tags: [ "v*" ]
+    
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
