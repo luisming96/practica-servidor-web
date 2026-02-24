@@ -23,4 +23,6 @@ jobs:
           context: .
           push: true
           # Se genera la imagen en tu cuenta de Docker Hub
-          tags: luisming96/landing-page:latest
+          tags: |
+            luisming96/landing-page:latest
+            luisming96/landing-page:${{ github.ref_name }}
