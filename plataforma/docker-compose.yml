@@ -36,6 +36,7 @@ services:
       - VIRTUAL_PORT=9090
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus # <--- CORREGIDO: Ahora los datos se guardan
     networks:
       - monitoring-network
       - proxy-network
@@ -47,6 +48,8 @@ services:
     environment:
       - VIRTUAL_HOST=grafana.test
       - VIRTUAL_PORT=3000
+    volumes:
+      - grafana_data:/var/lib/grafana # <--- CORREGIDO: Ahora tus Dashboards no se borran
     networks:
       - monitoring-network
       - proxy-network
@@ -73,5 +76,8 @@ networks:
   monitoring-network:
     external: true
 
+# --- VOLÚMENES (AQUÍ ES DONDE SE GUARDA TODO) ---
 volumes:
   portainer_data:
+  prometheus_data: # <--- AÑADIDO
+  grafana_data:    # <--- AÑADIDO
