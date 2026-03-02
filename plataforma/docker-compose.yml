@@ -1,6 +1,7 @@
 version: '3'
 
 services:
+  # EL PROXY (La puerta de entrada)
   proxy:
     image: nginxproxy/nginx-proxy:alpine
     container_name: nginx-proxy
@@ -16,6 +17,7 @@ services:
     networks:
       - proxy-network
 
+  # EL GENERADOR DE CERTIFICADOS (El que pone el candado)
   ssl-generator:
     image: nginxproxy/acme-companion
     container_name: nginx-proxy-acme
@@ -29,9 +31,12 @@ services:
     environment:
       - DEFAULT_EMAIL=luisming96@gmail.com
       - NGINX_PROXY_CONTAINER=nginx-proxy
+    depends_on:
+      - proxy
     networks:
       - proxy-network
 
+  # TU APP PRINCIPAL (Landing)
   landing:
     image: luisming96/landing-page:latest
     container_name: landing-container
@@ -42,6 +47,7 @@ services:
     networks:
       - proxy-network
 
+  # TU APP DE USABILIDAD
   usabilidad:
     image: nginx:alpine
     container_name: usabilidad-container
@@ -52,47 +58,44 @@ services:
     networks:
       - proxy-network
 
+  # GESTIÓN (Portainer)
   portainer:
-    image: 'portainer/portainer-ce:2.21.5-alpine'
+    image: portainer/portainer-ce:latest
     container_name: portainer
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
     environment:
       - VIRTUAL_HOST=portainer-luismi.servidorgp.somosdelprieto.com
       - LETSENCRYPT_HOST=portainer-luismi.servidorgp.somosdelprieto.com
       - VIRTUAL_PORT=9000
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - portainer_data:/data
     networks:
       - proxy-network
 
+  # MONITORIZACIÓN (Prometheus)
   prometheus:
-    image: 'prom/prometheus:v3.1.0'
+    image: prom/prometheus:latest
     container_name: prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
     environment:
       - VIRTUAL_HOST=prometheus-luismi.servidorgp.somosdelprieto.com
       - LETSENCRYPT_HOST=prometheus-luismi.servidorgp.somosdelprieto.com
       - VIRTUAL_PORT=9090
-    volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
-      - prometheus_data:/prometheus
     networks:
       - proxy-network
 
+  # MONITORIZACIÓN (Grafana)
   grafana:
-    image: 'grafana/grafana:latest'
+    image: grafana/grafana:latest
     container_name: grafana
+    volumes:
+      - grafana_data:/var/lib/grafana
     environment:
       - VIRTUAL_HOST=grafana-luismi.servidorgp.somosdelprieto.com
       - LETSENCRYPT_HOST=grafana-luismi.servidorgp.somosdelprieto.com
       - VIRTUAL_PORT=3000
-    volumes:
-      - grafana_data:/var/lib/grafana
-    networks:
-      - proxy-network
-
-  node-exporter:
-    image: prom/node-exporter:latest
-    container_name: node-exporter
     networks:
       - proxy-network
 
