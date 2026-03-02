@@ -1,4 +1,5 @@
 services:
+  # 1. El Proxy Inverso
   proxy:
     image: nginxproxy/nginx-proxy:alpine
     container_name: nginx-proxy
@@ -14,6 +15,7 @@ services:
     networks:
       - proxy-network
 
+  # 2. Generador de Certificados (Con Salto de Bloqueo)
   acme-companion:
     image: nginxproxy/acme-companion
     container_name: acme-companion
@@ -27,17 +29,19 @@ services:
     environment:
       - DEFAULT_EMAIL=luisming96@gmail.com
       - NGINX_PROXY_CONTAINER=nginx-proxy
+      # ESTA LÍNEA ES LA QUE SE SALTA EL BLOQUEO 429
+      - ACME_CA_URI=https://acme-staging-v02.api.letsencrypt.org/directory
     depends_on:
       - proxy
     networks:
       - proxy-network
 
+  # 3. Tu App Vitaclick
   usabilidad:
     image: nginx:alpine
     container_name: usabilidad-container
     restart: always
     volumes:
-      # Quitamos el :ro del primero para evitar el error de "read-only file system"
       - /home/luismi/app_vitaclick/Estudio_de_usabilidad/pages:/usr/share/nginx/html
       - /home/luismi/app_vitaclick/Estudio_de_usabilidad/assets:/usr/share/nginx/html/assets:ro
     environment:
@@ -47,6 +51,7 @@ services:
     networks:
       - proxy-network
 
+  # 4. Portainer
   portainer:
     image: portainer/portainer-ce:latest
     container_name: portainer
@@ -61,6 +66,7 @@ services:
     networks:
       - proxy-network
 
+  # 5. Prometheus
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
@@ -76,6 +82,7 @@ services:
       - proxy-network
       - monitor-network
 
+  # 6. Grafana
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
@@ -100,7 +107,7 @@ volumes:
   certs:
   vhost:
   html:
-  acme:            # <--- ESTO FALTABA
+  acme:
   portainer_data:
   prometheus_data:
   grafana_data:
