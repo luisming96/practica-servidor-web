@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   proxy:
     image: nginxproxy/nginx-proxy:alpine
@@ -36,8 +34,8 @@ services:
     image: nginx:alpine
     container_name: usabilidad-container
     volumes:
-      - "/home/luismi/Nueva carpeta - copia/Estudio_de_usabilidad/pages:/usr/share/nginx/html:ro"
-      - "/home/luismi/Nueva carpeta - copia/Estudio_de_usabilidad/assets:/usr/share/nginx/html/assets:ro"
+      # MONTAMOS LA CARPETA RAÍZ DE VITACLICK (Esto evita el error de read-only)
+      - "/home/luismi/Nueva carpeta - copia/Estudio_de_usabilidad:/usr/share/nginx/html:ro"
     environment:
       - VIRTUAL_HOST=usabilidad.luismi.servidorgp.somosdelprieto.com
       - LETSENCRYPT_HOST=usabilidad.luismi.servidorgp.somosdelprieto.com
