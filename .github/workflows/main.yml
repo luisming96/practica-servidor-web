@@ -34,8 +34,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.SERVER_PASSWORD }}
           port: ${{ secrets.SERVER_SSH_PORT }}
-
-        script: |
+          script: |
             cd ~/practica-servidor-web/plataforma
             git pull origin main
             docker compose pull landing
