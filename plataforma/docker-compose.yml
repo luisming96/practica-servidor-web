@@ -1,5 +1,4 @@
 services:
-  # 1. El Proxy Inverso
   proxy:
     image: nginxproxy/nginx-proxy:alpine
     container_name: nginx-proxy
@@ -15,7 +14,6 @@ services:
     networks:
       - proxy-network
 
-  # 2. Generador de Certificados (Let's Encrypt)
   acme-companion:
     image: nginxproxy/acme-companion
     container_name: acme-companion
@@ -34,13 +32,13 @@ services:
     networks:
       - proxy-network
 
-  # 3. Tu App Vitaclick
   usabilidad:
     image: nginx:alpine
     container_name: usabilidad-container
     restart: always
     volumes:
-      - /home/luismi/app_vitaclick/Estudio_de_usabilidad/pages:/usr/share/nginx/html:ro
+      # Quitamos el :ro del primero para evitar el error de "read-only file system"
+      - /home/luismi/app_vitaclick/Estudio_de_usabilidad/pages:/usr/share/nginx/html
       - /home/luismi/app_vitaclick/Estudio_de_usabilidad/assets:/usr/share/nginx/html/assets:ro
     environment:
       - VIRTUAL_HOST=usabilidad.luismi.servidorgp.somosdelprieto.com
@@ -49,7 +47,6 @@ services:
     networks:
       - proxy-network
 
-  # 4. Portainer
   portainer:
     image: portainer/portainer-ce:latest
     container_name: portainer
@@ -64,7 +61,6 @@ services:
     networks:
       - proxy-network
 
-  # 5. Prometheus
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
@@ -80,7 +76,6 @@ services:
       - proxy-network
       - monitor-network
 
-  # 6. Grafana
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
@@ -105,7 +100,7 @@ volumes:
   certs:
   vhost:
   html:
-  acme:
+  acme:            # <--- ESTO FALTABA
   portainer_data:
   prometheus_data:
   grafana_data:
