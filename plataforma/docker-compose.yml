@@ -20,16 +20,16 @@ services:
     image: nginxproxy/acme-companion
     container_name: nginx-proxy-acme
     restart: always
-    volumes_from:
-      - proxy
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      - certs:/etc/nginx/certs
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
       - acme:/etc/acme.sh
     environment:
       - DEFAULT_EMAIL=luisming96@gmail.com
     networks:
       - proxy-network
-
   landing:
     image: luisming96/landing-page:latest
     container_name: landing-container
