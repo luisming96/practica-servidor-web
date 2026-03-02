@@ -1,3 +1,5 @@
+version: '3'
+
 services:
   proxy:
     image: nginxproxy/nginx-proxy:alpine
@@ -34,7 +36,6 @@ services:
     image: nginx:alpine
     container_name: usabilidad-container
     volumes:
-      # He arreglado la ruta para que no use comillas ni barras raras
       - "/home/luismi/Nueva carpeta - copia/Estudio_de_usabilidad/pages:/usr/share/nginx/html:ro"
       - "/home/luismi/Nueva carpeta - copia/Estudio_de_usabilidad/assets:/usr/share/nginx/html/assets:ro"
     environment:
@@ -103,3 +104,4 @@ volumes:
   acme:
   portainer_data:
   prometheus_data:
+  grafana_data:
