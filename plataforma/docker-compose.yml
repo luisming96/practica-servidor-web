@@ -1,11 +1,13 @@
 services:
-  # 1. El Proxy Inverso (Solo por puerto 80 para evitar bloqueos SSL)
+  # 1. El Proxy Inverso (Configurado para PROHIBIR el redireccionamiento a HTTPS)
   proxy:
     image: nginxproxy/nginx-proxy:alpine
     container_name: nginx-proxy
     restart: always
     ports:
       - "80:80"
+    environment:
+      - HTTPS_METHOD=nohttps  # <--- ESTO ELIMINA EL ERROR 301 Y EL BLOQUEO SSL
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - vhost:/etc/nginx/vhost.d
@@ -26,7 +28,7 @@ services:
     networks:
       - proxy-network
 
-  # 3. Portainer (Gestión)
+  # 3. Portainer
   portainer:
     image: portainer/portainer-ce:latest
     container_name: portainer
@@ -40,7 +42,7 @@ services:
     networks:
       - proxy-network
 
-  # 4. Prometheus (Métricas)
+  # 4. Prometheus
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
@@ -55,7 +57,7 @@ services:
       - proxy-network
       - monitor-network
 
-  # 5. Grafana (Dashboards)
+  # 5. Grafana
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
