@@ -28,8 +28,10 @@ services:
       - acme:/etc/acme.sh
     environment:
       - DEFAULT_EMAIL=luisming96@gmail.com
+      - NGINX_PROXY_CONTAINER=nginx-proxy
     networks:
       - proxy-network
+
   landing:
     image: luisming96/landing-page:latest
     container_name: landing-container
