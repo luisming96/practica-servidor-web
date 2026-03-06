@@ -61,7 +61,7 @@ Convención mínima de la app:
 ## 5) Despliegue de VitaClick (actual)
 Servicio VitaClick en plataforma:
 - nombre contenedor: `usabilidad-container`
-- dominio activo: `usabilidad2.luismi.servidorgp.somosdelprieto.com`
+- dominio activo: `usabilidad2.luisming.servidorgp.somosdelprieto.com`
 - volumen web: `/home/luismi/app_vitaclick/Estudio_de_usabilidad/pages`
 
 Comandos:
@@ -74,7 +74,7 @@ docker compose up -d usabilidad nginx-proxy ssl-generator
 Verificación rápida:
 
 ```bash
-curl -I https://usabilidad2.luismi.servidorgp.somosdelprieto.com
+curl -I https://usabilidad2.luisming.servidorgp.somosdelprieto.com
 ```
 
 ## 6) Dominios y HTTPS (Let's Encrypt)
@@ -90,11 +90,11 @@ docker exec nginx-proxy grep -E "^[[:space:]]*server_name[[:space:]]+" /etc/ngin
 ```
 
 ## 7) Servicios publicados
-- App: `https://usabilidad2.luismi.servidorgp.somosdelprieto.com`
+- App: `https://usabilidad2.luisming.servidorgp.somosdelprieto.com`
 - Landing (routing activo): `http://luisming.servidorgp.somosdelprieto.com`
-- Portainer: `https://portainer.luismi.servidorgp.somosdelprieto.com`
-- Prometheus: `https://prometheus.luismi.servidorgp.somosdelprieto.com`
-- Grafana: `https://grafana.luismi.servidorgp.somosdelprieto.com`
+- Portainer: `https://portainer.luisming.servidorgp.somosdelprieto.com`
+- Prometheus: `https://prometheus.luisming.servidorgp.somosdelprieto.com`
+- Grafana: `https://grafana.luisming.servidorgp.somosdelprieto.com`
 
 Alias de despliegue mantenido:
 - `luisming.servidorgp.somosdelprieto.com` permanece configurado en `VIRTUAL_HOST` para la landing.
@@ -127,10 +127,10 @@ Resultado observado:
 Matriz HTTPS validada:
 
 ```bash
-usabilidad2.luismi.servidorgp.somosdelprieto.com:200
-portainer.luismi.servidorgp.somosdelprieto.com:307
-prometheus.luismi.servidorgp.somosdelprieto.com:302
-grafana.luismi.servidorgp.somosdelprieto.com:302
+usabilidad2.luisming.servidorgp.somosdelprieto.com:200
+portainer.luisming.servidorgp.somosdelprieto.com:307
+prometheus.luisming.servidorgp.somosdelprieto.com:302
+grafana.luisming.servidorgp.somosdelprieto.com:302
 ```
 
 Estado de monitorización (Prometheus `/api/v1/targets`):
