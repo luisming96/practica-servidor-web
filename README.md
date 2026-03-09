@@ -14,6 +14,7 @@ Este repositorio contiene la plataforma dockerizada de despliegue para aplicacio
 
 Servidor actual de referencia:
 - IP: `192.168.5.44`
+- Acceso externo SSH: `ssh -p 2244 luismi@www.servidorgp.somosdelprieto.com`
 
 ## 2) Estructura del proyecto
 - Plataforma principal: `plataforma/docker-compose.yml`
@@ -38,12 +39,14 @@ El script:
 
 ```bash
 scp -r ./mi-app usuario@192.168.5.44:~/apps/
+# Desde fuera del aula, usar: scp -P 2244 -r ./mi-app luismi@www.servidorgp.somosdelprieto.com:~/apps/
 ```
 
 2. Conectarse por SSH:
 
 ```bash
 ssh usuario@192.168.5.44
+# Desde fuera del aula, usar: ssh -p 2244 luismi@www.servidorgp.somosdelprieto.com
 ```
 
 3. Desplegar:
@@ -138,16 +141,15 @@ Estado de monitorización (Prometheus `/api/v1/targets`):
 - `job=node-exporter` -> `health=up`
 - `job=cadvisor` -> `health=up`
 
-Limitación externa documentada:
-- El certificado de `luisming.servidorgp.somosdelprieto.com` no puede emitirse por ACME HTTP-01 debido a restricción de red/puertos del entorno de aula fuera del control del alumno (respuesta `Connection refused` en validación externa).
-- Para no degradar el resto del stack, `landing` se mantiene desplegado y enrutado sin `LETSENCRYPT_HOST`.
+Nota de despliegue actual:
+- `landing` se mantiene enrutado por `VIRTUAL_HOST` sin `LETSENCRYPT_HOST` para no interferir con la emisión de certificados de los servicios principales.
 
 ## 8) Monitorización
 - Prometheus activo en contenedor `prometheus`
 - Grafana activo en contenedor `grafana`
 - Dashboard recomendado: Node Exporter Full (ID 1860)
 
-Nota: la configuración actual de `prometheus.yml` incluye target `node-exporter:9100`; para cerrar esta parte al 100%, debe existir servicio `node-exporter` activo en la red correspondiente.
+Nota: la configuración actual de `prometheus.yml` incluye targets `prometheus`, `node-exporter` y `cadvisor`, todos operativos en el entorno validado.
 
 ## 9) Portainer
 - Contenedor: `portainer`
@@ -181,6 +183,6 @@ docker logs -f usabilidad-container
 - Servicios dockerizados: **OK**
 - Flujo profesor (2-3 apps por SSH/SCP): **Listo para validación**
 
-Observación técnica para alineación total con la rúbrica de arquitectura:
-- En la configuración actual del compose principal se usa `proxy-network` para todos los servicios.
-- Se recomienda añadir una red interna de monitorización y el servicio `node-exporter` para cumplir estrictamente la separación de redes y métricas de host.
+Observación técnica de arquitectura actual:
+- La plataforma usa `proxy-network` para publicación web y `monitoring-network` interna para métricas.
+- `node-exporter` y `cadvisor` están integrados para monitorización de host y contenedores.
